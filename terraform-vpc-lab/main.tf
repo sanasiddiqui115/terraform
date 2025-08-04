@@ -13,10 +13,10 @@ resource "aws_vpc" "sana_vpc" {
 }
 
 resource "aws_subnet" "sana_public_subnet" {
-  vpc_id                  = aws_vpc.my_vpc.id
+  vpc_id                  = aws_vpc.sana_vpc.id
   cidr_block              = "10.0.1.0/24"
   map_public_ip_on_launch = true
-  availability_zone       = "ap-souch-1a"
+  availability_zone       = "ap-south-1a"
 
   tags = {
     Name = "SanaPublicSubnet"
@@ -24,7 +24,7 @@ resource "aws_subnet" "sana_public_subnet" {
 }
 
 resource "aws_internet_gateway" "sana_igw" {
-  vpc_id = aws_vpc.my_vpc.id
+  vpc_id = aws_vpc.sana_vpc.id
 
   tags = {
     Name = "SanaInternetGateway"
@@ -32,7 +32,7 @@ resource "aws_internet_gateway" "sana_igw" {
 }
 
 resource "aws_route_table" "sana_public_rt" {
-  vpc_id = aws_vpc.my_vpc.id
+  vpc_id = aws_vpc.sana_vpc.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -52,7 +52,7 @@ resource "aws_route_table_association" "sana_public_rt_assoc" {
 resource "aws_security_group" "sana_ec2_sg" {
   name        = "EC2SecurityGroup"
   description = "Allow SSH access"
-  vpc_id      = aws_vpc.my_vpc.id
+  vpc_id      = aws_vpc.sana_vpc.id
 
   ingress {
     description = "SSH from anywhere (for lab purposes; restrict in production)"
