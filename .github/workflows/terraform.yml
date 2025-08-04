@@ -40,3 +40,21 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
         working-directory: ./
+
+      - name: Wait before destroy
+        run: sleep 300  # 5 minutes
+
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
+        env:
+         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Upload plan/apply/destroy logs
+        uses: actions/upload-artifact@v4
+        with:
+            name: terraform-logs
+            path: |
+                tfplan-output.txt
+                tfapply-output.txt
+                tfdestroy-output.txt
