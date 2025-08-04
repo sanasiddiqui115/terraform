@@ -23,14 +23,14 @@ jobs:
           terraform_version: 1.8.4
 
       - name: Terraform Init
-        working-directory: terraform-old
+        working-directory: ./
         run: terraform init
 
       - name: Terraform Plan
-        working-directory: terraform-old
+        working-directory: ./
         run: terraform plan
 
       # - name: Terraform Apply
       #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      #   working-directory: terraform-old
+      #   working-directory: ./
       #   run: terraform apply -auto-approve
